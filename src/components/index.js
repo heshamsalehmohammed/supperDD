@@ -1,3 +1,3 @@
-import SuperDD from './SuperDD/SuperDD.jsx';
+import SuperDD from './SuperDD/SuperDD.js';
 
 export {SuperDD};

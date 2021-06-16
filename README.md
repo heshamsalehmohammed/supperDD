@@ -14,7 +14,7 @@ npm install supperdd
 ## Usage
 
 ```python
-import SuperDD from 'SuperDD/SuperDD';
+import SuperDD from 'superdd/dist/';
 
 const Home = (props) => {
   let listData = [
