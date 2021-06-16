@@ -3,7 +3,7 @@
 Very useful react component for multi selection dropdown with filtering , 
 toggle selecting all, tags outside the dropdown and custom button inside dropdown
 
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Alt Text](src/ReadMe/supperdd.gif)
 
 ## Installation
 
