@@ -10,6 +10,6 @@ Object.defineProperty(exports, "SuperDD", {
   }
 });
 
-var _SuperDD = _interopRequireDefault(require("./SuperDD/SuperDD.jsx"));
+var _SuperDD = _interopRequireDefault(require("./SuperDD/SuperDD.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
