@@ -1,7 +1,8 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
 
-import SupperDD from '../components/SuperDD/SuperDD.jsx';
+import SupperDD from '../../dist/index';
+//import SupperDD from '../components/index';
 
 const stories = storiesOf('App Test', module);
 

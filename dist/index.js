@@ -3,13 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "SuperDD", {
-  enumerable: true,
-  get: function get() {
-    return _SuperDD.default;
-  }
-});
+exports.default = void 0;
 
-var _SuperDD = _interopRequireDefault(require("./SuperDD/SuperDD.js"));
+var _SuperDD = _interopRequireDefault(require("./SuperDD/SuperDD"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = _SuperDD.default;
+exports.default = _default;
