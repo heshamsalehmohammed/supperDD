@@ -1,8 +1,8 @@
 import React from 'react';
 import {storiesOf} from '@storybook/react';
 
-import SupperDD from '../../dist/index';
-//import SupperDD from '../components/index';
+import SuperDD from '../../dist/index';
+//import SuperDD from '../components/index';
 
 const stories = storiesOf('App Test', module);
 
@@ -17,5 +17,5 @@ stories.add('App', () => {
     {Id: 7, Code: 'sss', Name: 'Hello4', Discription: 'anything4'},
     {Id: 8, Code: 'sss', Name: 'Hello4', Discription: 'anything4'},
   ];
-  return <SupperDD DataList={listData} DisplayBy={"Code"} />;
+  return <SuperDD DataList={listData} DisplayBy={"Code"} />;
 });
