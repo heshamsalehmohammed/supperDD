@@ -1,11 +1,18 @@
 {
   "name": "superdd",
   "version": "1.0.0",
-  "description": "a very useful react component for multi selection dropdown with filtering , toggle selecting all, tags outside the dropdown and custom button inside dropdown ",
+  "description": "Very useful react component for multi selection dropdown with filtering , toggle selecting all, tags outside the dropdown and custom button inside dropdown ",
   "keywords": [
     "react",
     "components",
-    "ui"
+    "ui",
+    "dropdown",
+    "drop-down",
+    "multiselect",
+    "multi-select",
+    "tags",
+    "checkbox",
+    "filter"
   ],
   "private": false,
   "module": "dist/index.js",
@@ -16,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/heshamsalehmohammed/superdd.git"
+    "url": "git+https://github.com/heshamsalehmohammed/supperDD.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\"",
