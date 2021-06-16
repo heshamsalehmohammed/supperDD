@@ -43,7 +43,7 @@ const Home = (props) => {
           ShowUpdateButton={true}
           UpdateAction={updateActionHandler}
           ShowCancelButton={true}
-          cancelAction={cancelActionHandler}
+          CancelAction={cancelActionHandler}
           Filterable={true}
           SelectedLabelsOutsideIn={selectedLabelsContainer}
         />
