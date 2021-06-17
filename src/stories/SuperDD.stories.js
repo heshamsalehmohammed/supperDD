@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {storiesOf} from '@storybook/react';
 
-import SuperDD from '../../dist/index';
-//import SuperDD from '../components/index';
+//import {SuperDD, TagsContainer} from '../../dist/index';
+import {SuperDD, TagsContainer} from '../components/index';
 
 const stories = storiesOf('App Test', module);
 
@@ -17,5 +17,19 @@ stories.add('App', () => {
     {Id: 7, Code: 'sss', Name: 'Hello4', Discription: 'anything4'},
     {Id: 8, Code: 'sss', Name: 'Hello4', Discription: 'anything4'},
   ];
-  return <SuperDD DataList={listData} DisplayBy={"Code"} />;
+
+  return (
+    <div className="m-5">
+      <SuperDD
+        DataList={listData}
+        DisplayBy={'Code'}
+        PlaceHolder={'Select Platforms'}
+        ShowUpdateButton={true}
+        ShowCancelButton={true}
+        Filterable={true}
+      />
+      <br />
+      <TagsContainer DisplayBy={'Code'}/>
+    </div>
+  );
 });

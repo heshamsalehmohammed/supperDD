@@ -1,24 +1,38 @@
 import './SuperDD.css';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
+import {useSelector, useDispatch, connect} from 'react-redux';
+import {updateDataList} from '../Redux/actions';
 
-const SuperDD = (props) => {
+const SuperDD = React.memo((props) => {
   const {
     DataList,
     DisplayBy,
-    PlaceHolder = "Select Items ...",
+    PlaceHolder = 'Select Items ...',
     ShowUpdateButton = true,
-    ShowCancelButton = true ,
+    ShowCancelButton = true,
     UpdateAction = () => {},
     CancelAction = () => {},
-    SelectedLabelsOutsideIn,
     Filterable = true,
   } = props;
 
+  const dispatch = useDispatch();
   const [search, setSearch] = useState('');
 
-  const [localDataList, setLocalDataList] = useState(
-    DataList.map((dl) => ({...dl, isSelected: false}))
-  );
+  const reduxDataList = useSelector((state) => state.dataList);
+
+  const getInitLocalDataList = () => {
+    if (reduxDataList && reduxDataList.length > 0) {
+      return reduxDataList;
+    } else {
+      return DataList?.map((dl) => ({...dl, isSelected: false})) ?? [];
+    }
+  };
+
+  const [localDataList, setLocalDataList] = useState(getInitLocalDataList());
+
+  useEffect(() => {
+    setLocalDataList(getInitLocalDataList());
+  }, [reduxDataList]);
 
   const supperDDSelectBoxRef = useRef(null);
   const supperDDSelectOutputRef = useRef(null);
@@ -31,16 +45,6 @@ const SuperDD = (props) => {
           ldl.Id == objectOfList.Id ? event.target.checked : ldl.isSelected,
       }))
     );
-    if (event.target.checked) {
-      const span = document.createElement('span');
-      span.setAttribute('id', 'superDD___ExternalTag' + objectOfList.Id);
-      span.textContent = objectOfList[DisplayBy];
-      SelectedLabelsOutsideIn.current.appendChild(span);
-    } else {
-      document
-        .getElementById('superDD___ExternalTag' + objectOfList.Id)
-        .remove();
-    }
   };
 
   const getLiListItems = () => {
@@ -55,7 +59,8 @@ const SuperDD = (props) => {
           <div
             key={index}
             className={
-              'supperDDcheckbox-container' + (value.isSelected ? ' Active' : '')
+              'supperDDcheckbox-container' +
+              (value.isSelected ? ' supperDDcheckbox-active' : '')
             }>
             <input
               type="checkbox"
@@ -90,15 +95,6 @@ const SuperDD = (props) => {
         isSelected: false,
       }))
     );
-    clearSelectedlabels();
-  };
-
-  const clearSelectedlabels = () => {
-    var child = SelectedLabelsOutsideIn.current.lastElementChild;
-    while (child) {
-      SelectedLabelsOutsideIn.current.removeChild(child);
-      child = SelectedLabelsOutsideIn.current.lastElementChild;
-    }
   };
 
   const selectedAll = () => {
@@ -108,18 +104,11 @@ const SuperDD = (props) => {
         isSelected: true,
       }))
     );
-    clearSelectedlabels();
-    localDataList.forEach((ldl) => {
-      const span = document.createElement('span');
-      span.setAttribute('id', 'superDD___ExternalTag' + ldl.Id);
-      span.textContent = ldl[DisplayBy];
-      SelectedLabelsOutsideIn.current.appendChild(span);
-    });
   };
 
   const updateButtonClickHandler = (e) => {
+    dispatch(updateDataList(localDataList));
     UpdateAction();
-    toggleShow();
   };
   const cancelButtonClickHandler = (e) => {
     CancelAction();
@@ -128,6 +117,10 @@ const SuperDD = (props) => {
 
   const toggleShow = (e) => {
     supperDDSelectBoxRef.current.classList.toggle('show');
+  };
+
+  const isAllSelected = () => {
+    return localDataList.every((dl) => dl.isSelected);
   };
 
   return (
@@ -148,13 +141,17 @@ const SuperDD = (props) => {
                   onChange={onSearchChange}
                   type={'text'}
                 />
-                <input
-                  type="checkbox"
-                  onChange={(e) => handleSelectAll(e)}
-                  className={'superdd-selectall-input supperDDcheckbox'}
-                  style={{marginTop: '0.75em'}}
-                  title={'Select All'}
-                />
+                <div>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => handleSelectAll(e)}
+                    className={'superdd-selectall-input supperDDcheckbox'}
+                    style={{marginTop: '0.75em'}}
+                    title={'Select All'}
+                    checked={isAllSelected()}
+                  />
+                  <label>Select All</label>
+                </div>
               </div>
             )}
             {getLiListItems()}
@@ -179,6 +176,8 @@ const SuperDD = (props) => {
       </div>
     </div>
   );
-};
+});
 
-export default SuperDD;
+export default connect((state) => ({
+  score: state.dataList,
+}))(SuperDD);

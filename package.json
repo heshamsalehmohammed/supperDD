@@ -1,6 +1,6 @@
 {
   "name": "superdd",
-  "version": "1.2.3",
+  "version": "2.0.1",
   "description": "Very useful react component for multi selection dropdown with filtering , toggle selecting all, tags outside the dropdown and custom button inside dropdown ",
   "keywords": [
     "react",
@@ -59,6 +59,8 @@
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.12.1"
+    "@babel/polyfill": "^7.12.1",
+    "react-redux": "^7.2.4",
+    "redux": "^4.1.0"
   }
 }

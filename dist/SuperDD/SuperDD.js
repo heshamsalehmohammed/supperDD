@@ -11,6 +11,10 @@ require("./SuperDD.css");
 
 var _react = _interopRequireWildcard(require("react"));
 
+var _reactRedux = require("react-redux");
+
+var _actions = require("../Redux/actions");
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -21,22 +25,37 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-const SuperDD = props => {
+const SuperDD = /*#__PURE__*/_react.default.memo(props => {
   const {
     DataList,
     DisplayBy,
-    PlaceHolder = "Select Items ...",
+    PlaceHolder = 'Select Items ...',
     ShowUpdateButton = true,
     ShowCancelButton = true,
     UpdateAction = () => {},
     CancelAction = () => {},
-    SelectedLabelsOutsideIn,
     Filterable = true
   } = props;
+  const dispatch = (0, _reactRedux.useDispatch)();
   const [search, setSearch] = (0, _react.useState)('');
-  const [localDataList, setLocalDataList] = (0, _react.useState)(DataList.map(dl => _objectSpread(_objectSpread({}, dl), {}, {
-    isSelected: false
-  })));
+  const reduxDataList = (0, _reactRedux.useSelector)(state => state.dataList);
+
+  const getInitLocalDataList = () => {
+    if (reduxDataList && reduxDataList.length > 0) {
+      return reduxDataList;
+    } else {
+      var _DataList$map;
+
+      return (_DataList$map = DataList === null || DataList === void 0 ? void 0 : DataList.map(dl => _objectSpread(_objectSpread({}, dl), {}, {
+        isSelected: false
+      }))) !== null && _DataList$map !== void 0 ? _DataList$map : [];
+    }
+  };
+
+  const [localDataList, setLocalDataList] = (0, _react.useState)(getInitLocalDataList());
+  (0, _react.useEffect)(() => {
+    setLocalDataList(getInitLocalDataList());
+  }, [reduxDataList]);
   const supperDDSelectBoxRef = (0, _react.useRef)(null);
   const supperDDSelectOutputRef = (0, _react.useRef)(null);
 
@@ -44,15 +63,6 @@ const SuperDD = props => {
     setLocalDataList(localDataList.map(ldl => _objectSpread(_objectSpread({}, ldl), {}, {
       isSelected: ldl.Id == objectOfList.Id ? event.target.checked : ldl.isSelected
     })));
-
-    if (event.target.checked) {
-      const span = document.createElement('span');
-      span.setAttribute('id', 'superDD___ExternalTag' + objectOfList.Id);
-      span.textContent = objectOfList[DisplayBy];
-      SelectedLabelsOutsideIn.current.appendChild(span);
-    } else {
-      document.getElementById('superDD___ExternalTag' + objectOfList.Id).remove();
-    }
   };
 
   const getLiListItems = () => {
@@ -61,7 +71,7 @@ const SuperDD = props => {
     }).map((value, index) => {
       return /*#__PURE__*/_react.default.createElement("div", {
         key: index,
-        className: 'supperDDcheckbox-container' + (value.isSelected ? ' Active' : '')
+        className: 'supperDDcheckbox-container' + (value.isSelected ? ' supperDDcheckbox-active' : '')
       }, /*#__PURE__*/_react.default.createElement("input", {
         type: "checkbox",
         className: "supperDDcheckbox",
@@ -91,34 +101,17 @@ const SuperDD = props => {
     setLocalDataList(localDataList.map(ldl => _objectSpread(_objectSpread({}, ldl), {}, {
       isSelected: false
     })));
-    clearSelectedlabels();
-  };
-
-  const clearSelectedlabels = () => {
-    var child = SelectedLabelsOutsideIn.current.lastElementChild;
-
-    while (child) {
-      SelectedLabelsOutsideIn.current.removeChild(child);
-      child = SelectedLabelsOutsideIn.current.lastElementChild;
-    }
   };
 
   const selectedAll = () => {
     setLocalDataList(localDataList.map(ldl => _objectSpread(_objectSpread({}, ldl), {}, {
       isSelected: true
     })));
-    clearSelectedlabels();
-    localDataList.forEach(ldl => {
-      const span = document.createElement('span');
-      span.setAttribute('id', 'superDD___ExternalTag' + ldl.Id);
-      span.textContent = ldl[DisplayBy];
-      SelectedLabelsOutsideIn.current.appendChild(span);
-    });
   };
 
   const updateButtonClickHandler = e => {
+    dispatch((0, _actions.updateDataList)(localDataList));
     UpdateAction();
-    toggleShow();
   };
 
   const cancelButtonClickHandler = e => {
@@ -128,6 +121,10 @@ const SuperDD = props => {
 
   const toggleShow = e => {
     supperDDSelectBoxRef.current.classList.toggle('show');
+  };
+
+  const isAllSelected = () => {
+    return localDataList.every(dl => dl.isSelected);
   };
 
   return /*#__PURE__*/_react.default.createElement("div", {
@@ -149,15 +146,16 @@ const SuperDD = props => {
     className: "superdd-search-input",
     onChange: onSearchChange,
     type: 'text'
-  }), /*#__PURE__*/_react.default.createElement("input", {
+  }), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("input", {
     type: "checkbox",
     onChange: e => handleSelectAll(e),
     className: 'superdd-selectall-input supperDDcheckbox',
     style: {
       marginTop: '0.75em'
     },
-    title: 'Select All'
-  })), getLiListItems(), /*#__PURE__*/_react.default.createElement("div", {
+    title: 'Select All',
+    checked: isAllSelected()
+  }), /*#__PURE__*/_react.default.createElement("label", null, "Select All"))), getLiListItems(), /*#__PURE__*/_react.default.createElement("div", {
     className: "superdd-select-buttons"
   }, ShowUpdateButton && /*#__PURE__*/_react.default.createElement("button", {
     onClick: e => updateButtonClickHandler(e),
@@ -166,7 +164,10 @@ const SuperDD = props => {
     onClick: e => cancelButtonClickHandler(e),
     type: "button"
   }, "Cancel"))))));
-};
+});
 
-var _default = SuperDD;
+var _default = (0, _reactRedux.connect)(state => ({
+  score: state.dataList
+}))(SuperDD);
+
 exports.default = _default;
