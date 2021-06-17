@@ -3,7 +3,7 @@
 }
 
 .superdd-select {
- /*  width: 33vw; */
+  /*  width: 33vw; */
   position: relative;
 }
 
@@ -21,6 +21,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   overflow-x: auto;
+  justify-content: space-between;
 }
 
 .superdd-select-output p {
@@ -60,6 +61,8 @@
   z-index: -2;
   overflow-x: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .superdd-select-box.show {
@@ -96,7 +99,6 @@
   padding: 0.3em;
   padding-left: 0.5em;
   margin: 0.1em;
-  width: 85%;
   outline: none;
   border-radius: 0.5em;
   outline: none;
@@ -112,11 +114,15 @@
 
 .supperDDcheckbox-container {
   padding: 0.25em;
+  border: #ffffff00 1px solid;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .supperDDcheckbox-active {
-  background-color: azure;
-  border: #00737300 1px solid;
+  background-color: rgba(30, 167, 253, 6%);
+  border: #ffffff 1px solid;
   border-radius: 0.2em;
 }
 
@@ -125,11 +131,18 @@
   margin: 0;
   width: 80%;
   align-content: center;
-  vertical-align: bottom;
+  bottom: 13%;
+}
+
+.superdd-selectall-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-start;
 }
 
 .supperDDcheckbox {
-  padding: 0.1em !important;
   transform: scale3d(1.5, 1.5, 1.5);
   margin: 0.5em;
 }
@@ -138,24 +151,25 @@
   position: sticky;
   top: 0;
   padding: 0.75em;
-  width: 100%;
+  padding-bottom: 0.25em;
   justify-content: center;
   background-color: #fff;
   z-index: 100000;
   display: flex;
   align-content: flex-start;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   flex-direction: column;
+  box-shadow: 0 9px 5px -5px #80808038;
 }
 
 .superdd-select-buttons {
   position: sticky;
-  bottom: 0;
-  padding: 0.1em;
+  bottom: -1px;
   display: flex;
   width: 100%;
   justify-content: center;
   background-color: #fff;
+  align-self: center;
 }
 
 .superdd-select-buttons button {
@@ -180,6 +194,7 @@
   border-color: #007bff;
   margin: 0.3em;
   cursor: pointer;
+  font-family: monospace;
 }
 
 .superdd-select-buttons button:hover {
@@ -187,10 +202,6 @@
   background-color: #0069d9;
   border-color: #0062cc;
 }
-
-
-
-
 
 /* width */
 ::-webkit-scrollbar {
@@ -205,5 +216,6 @@
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #0052cc; 
+  background: #0052cc;
 }
+

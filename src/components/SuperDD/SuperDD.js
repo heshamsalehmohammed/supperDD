@@ -4,7 +4,6 @@ import {useSelector, useDispatch, connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {updateDataList} from '../Redux/actions';
 
-
 const SuperDD = React.memo((props) => {
   const {
     DataList,
@@ -135,6 +134,7 @@ const SuperDD = React.memo((props) => {
 
   const toggleShow = (e) => {
     supperDDSelectBoxRef.current.classList.toggle('show');
+    supperDDSelectOutputRef.current.classList.toggle('active');
   };
 
   const isAllSelected = () => {
@@ -150,6 +150,9 @@ const SuperDD = React.memo((props) => {
             ref={supperDDSelectOutputRef}
             className="superdd-select-output">
             <p>{PlaceHolder}</p>
+            <div className="icon">
+              <div className="dropdown"></div>
+            </div>
           </div>
           <div ref={supperDDSelectBoxRef} className="superdd-select-box">
             {Filterable && (
@@ -159,12 +162,11 @@ const SuperDD = React.memo((props) => {
                   onChange={onSearchChange}
                   type={'text'}
                 />
-                <div>
+                <div className="superdd-selectall-container">
                   <input
                     type="checkbox"
                     onChange={(e) => handleSelectAll(e)}
                     className={'superdd-selectall-input supperDDcheckbox'}
-                    style={{marginTop: '0.75em'}}
                     title={'Select All'}
                     checked={isAllSelected()}
                   />
