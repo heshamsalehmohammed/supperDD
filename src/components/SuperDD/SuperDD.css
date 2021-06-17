@@ -117,7 +117,6 @@
   border: #ffffff00 1px solid;
   height: 100%;
   display: flex;
-  align-items: center;
 }
 
 .supperDDcheckbox-active {
@@ -139,7 +138,7 @@
   flex-direction: row;
   align-items: center;
   align-content: center;
-  justify-content: flex-start;
+  justify-content:space-between;
 }
 
 .supperDDcheckbox {
@@ -219,3 +218,9 @@
   background: #0052cc;
 }
 
+.sort-button{
+  font-size: medium;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.1em;
+}

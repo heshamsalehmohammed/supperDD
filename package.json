@@ -1,6 +1,6 @@
 {
   "name": "superdd",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "Very useful react component for multi selection dropdown with filtering , toggle selecting all, tags outside the dropdown and custom button inside dropdown ",
   "keywords": [
     "react",

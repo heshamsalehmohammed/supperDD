@@ -3,6 +3,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import {useSelector, useDispatch, connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {updateDataList} from '../Redux/actions';
+import {SortState} from '../Common/enums';
 
 const SuperDD = React.memo((props) => {
   const {
@@ -14,11 +15,14 @@ const SuperDD = React.memo((props) => {
     UpdateAction = () => {},
     CancelAction = () => {},
     Filterable = true,
+    Sortable = true,
     SetSelectedItems,
   } = props;
 
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
+
+  const [sortState, setSortState] = useState(SortState.None);
 
   const reduxDataList = useSelector((state) => state.dataList);
 
@@ -51,30 +55,52 @@ const SuperDD = React.memo((props) => {
   };
 
   const getLiListItems = () => {
-    return localDataList
-      .filter((ldl) => {
-        return (
-          ldl[DisplayBy].toLowerCase().indexOf(search?.toLowerCase()) !== -1
-        );
-      })
-      .map((value, index) => {
-        return (
-          <div
-            key={index}
-            className={
-              'supperDDcheckbox-container' +
-              (value.isSelected ? ' supperDDcheckbox-active' : '')
-            }>
-            <input
-              type="checkbox"
-              className="supperDDcheckbox"
-              onChange={(e) => handleCheckboxClicked(e, value)}
-              checked={value.isSelected}
-            />
-            <label className="supperDDcheckbox-label">{value[DisplayBy]}</label>
-          </div>
-        );
+    let filteredDataLocalList = localDataList.filter((ldl) => {
+      return ldl[DisplayBy].toLowerCase().indexOf(search?.toLowerCase()) !== -1;
+    });
+    let sortedDataLocalList = filteredDataLocalList;
+    if (
+      (sortState == SortState.Asc || sortState == SortState.Des) &&
+      Sortable
+    ) {
+      sortedDataLocalList = filteredDataLocalList.sort(function (a, b) {
+        var nameA = a[DisplayBy].toUpperCase();
+        var nameB = b[DisplayBy].toUpperCase();
+        if (nameA < nameB) {
+          if (sortState == SortState.Asc) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }
+        if (nameA > nameB) {
+          if (sortState == SortState.Asc) {
+            return 1;
+          } else {
+            return -1;
+          }
+        }
+        return 0;
       });
+    }
+    return sortedDataLocalList.map((value, index) => {
+      return (
+        <div
+          key={index}
+          className={
+            'supperDDcheckbox-container' +
+            (value.isSelected ? ' supperDDcheckbox-active' : '')
+          }>
+          <input
+            type="checkbox"
+            className="supperDDcheckbox"
+            onChange={(e) => handleCheckboxClicked(e, value)}
+            checked={value.isSelected}
+          />
+          <label className="supperDDcheckbox-label">{value[DisplayBy]}</label>
+        </div>
+      );
+    });
   };
 
   const onSearchChange = (e) => {
@@ -141,6 +167,37 @@ const SuperDD = React.memo((props) => {
     return localDataList.every((dl) => dl.isSelected);
   };
 
+  const getSortStateSpan = () => {
+    if (!Sortable) return '';
+    switch (sortState) {
+      case SortState.None:
+        return <span>&#10607;</span>;
+      case SortState.Asc:
+        return <span>&#10595;</span>;
+      case SortState.Des:
+        return <span>&#10597;</span>;
+      default:
+        break;
+    }
+    return localDataList.every((dl) => dl.isSelected);
+  };
+
+  const incrementSortState = (e) => {
+    switch (sortState) {
+      case SortState.None:
+        setSortState(SortState.Asc);
+        break;
+      case SortState.Asc:
+        setSortState(SortState.Des);
+        break;
+      case SortState.Des:
+        setSortState(SortState.None);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="supperDD">
       <div className="superdd-select-wrapper">
@@ -163,14 +220,19 @@ const SuperDD = React.memo((props) => {
                   type={'text'}
                 />
                 <div className="superdd-selectall-container">
-                  <input
-                    type="checkbox"
-                    onChange={(e) => handleSelectAll(e)}
-                    className={'superdd-selectall-input supperDDcheckbox'}
-                    title={'Select All'}
-                    checked={isAllSelected()}
-                  />
-                  <label>Select All</label>
+                  <div className="selectall-checkbox">
+                    <input
+                      type="checkbox"
+                      onChange={(e) => handleSelectAll(e)}
+                      className={'superdd-selectall-input supperDDcheckbox'}
+                      title={'Select All'}
+                      checked={isAllSelected()}
+                    />
+                    <label>Select All</label>
+                  </div>
+                  <div onClick={incrementSortState} className="sort-button">
+                    {getSortStateSpan()}
+                  </div>
                 </div>
               </div>
             )}
