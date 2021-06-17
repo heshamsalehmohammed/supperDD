@@ -1,18 +1,21 @@
 import './SuperDD.css';
 import React, {useState, useRef, useEffect} from 'react';
 import {useSelector, useDispatch, connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import {updateDataList} from '../Redux/actions';
+
 
 const SuperDD = React.memo((props) => {
   const {
     DataList,
-    DisplayBy,
+    DisplayBy = 'Id',
     PlaceHolder = 'Select Items ...',
     ShowUpdateButton = true,
     ShowCancelButton = true,
     UpdateAction = () => {},
     CancelAction = () => {},
     Filterable = true,
+    SetSelectedItems,
   } = props;
 
   const dispatch = useDispatch();
@@ -32,6 +35,7 @@ const SuperDD = React.memo((props) => {
 
   useEffect(() => {
     setLocalDataList(getInitLocalDataList());
+    updateUser();
   }, [reduxDataList]);
 
   const supperDDSelectBoxRef = useRef(null);
@@ -106,9 +110,23 @@ const SuperDD = React.memo((props) => {
     );
   };
 
+  const updateUser = () => {
+    const returnedSelectedItems = [
+      ...reduxDataList
+        .filter((ldl) => ldl.isSelected)
+        .map((ldl) => {
+          const {isSelected, ...originalObject} = ldl;
+          return originalObject;
+        }),
+    ];
+    if (SetSelectedItems) {
+      SetSelectedItems(returnedSelectedItems);
+    }
+    UpdateAction(returnedSelectedItems);
+  };
+
   const updateButtonClickHandler = (e) => {
     dispatch(updateDataList(localDataList));
-    UpdateAction();
   };
   const cancelButtonClickHandler = (e) => {
     CancelAction();
@@ -177,6 +195,18 @@ const SuperDD = React.memo((props) => {
     </div>
   );
 });
+
+SuperDD.propTypes = {
+  DataList: PropTypes.array,
+  DisplayBy: PropTypes.string,
+  PlaceHolder: PropTypes.string,
+  ShowUpdateButton: PropTypes.bool,
+  ShowCancelButton: PropTypes.bool,
+  UpdateAction: PropTypes.func,
+  CancelAction: PropTypes.func,
+  Filterable: PropTypes.bool,
+  SetSelectedItems: PropTypes.func,
+};
 
 export default connect((state) => ({
   score: state.dataList,

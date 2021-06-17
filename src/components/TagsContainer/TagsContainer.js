@@ -2,9 +2,14 @@ import './TagsContainer.css';
 import React, {useState, useRef, useEffect} from 'react';
 import {useSelector, useDispatch, connect} from 'react-redux';
 import {deselectAll, updateDataList} from '../Redux/actions';
+import PropTypes from 'prop-types';
 
 const TagsContainer = React.memo((props) => {
-  const {DisplayBy} = props;
+  const {
+    DisplayBy = 'Id',
+    TagsHasDeselect = true,
+    ContainerHasDeselect = true,
+  } = props;
 
   const dispatch = useDispatch();
 
@@ -39,15 +44,17 @@ const TagsContainer = React.memo((props) => {
         {tags.map((tag, index) => (
           <li key={index} className="tag">
             <span className="tag-title">{tag[DisplayBy]}</span>
-            <span
-              className="tag-close-icon"
-              onClick={(e) => removeTags(e, tag)}>
-              &#10006;
-            </span>
+            {TagsHasDeselect && (
+              <span
+                className="tag-close-icon"
+                onClick={(e) => removeTags(e, tag)}>
+                &#10006;
+              </span>
+            )}
           </li>
         ))}
       </ul>
-      {tags.length > 0 && (
+      {tags.length > 1 && ContainerHasDeselect && (
         <button onClick={closeButtonHandler} className="close-button">
           &#10006;
         </button>
@@ -55,5 +62,11 @@ const TagsContainer = React.memo((props) => {
     </div>
   );
 });
+
+TagsContainer.propTypes = {
+  DisplayBy: PropTypes.string,
+  TagsHasDeselect: PropTypes.bool,
+  ContainerHasDeselect: PropTypes.bool,
+};
 
 export default TagsContainer;

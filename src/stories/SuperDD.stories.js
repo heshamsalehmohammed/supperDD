@@ -18,8 +18,20 @@ stories.add('App', () => {
     {Id: 8, Code: 'sss', Name: 'Hello4', Discription: 'anything4'},
   ];
 
+  // to get the selected data
+  // whither on the update action
+  // or deselecting from the TagsContainer
+  const [selectedItems, setSelectedItems] = useState();
+  useEffect(() => {
+    console.log('from setSelectedItems', selectedItems);
+  }, [selectedItems]);
+
+  const onUpdateAction = (superDDSelectedItems) => {
+    console.log('from update function', superDDSelectedItems);
+  };
+
   return (
-    <div className="m-5">
+    <div className="m-5" style={{width: '250px'}}>
       <SuperDD
         DataList={listData}
         DisplayBy={'Code'}
@@ -27,9 +39,15 @@ stories.add('App', () => {
         ShowUpdateButton={true}
         ShowCancelButton={true}
         Filterable={true}
+        SetSelectedItems={setSelectedItems}
+        UpdateAction={onUpdateAction}
       />
       <br />
-      <TagsContainer DisplayBy={'Code'}/>
+      <TagsContainer
+        DisplayBy={'Code'}
+        TagsHasDeselect={true}
+        ContainerHasDeselect={5}
+      />
     </div>
   );
 });
