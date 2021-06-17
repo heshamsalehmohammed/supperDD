@@ -8,7 +8,7 @@ toggle selecting all, tags outside the dropdown and custom button inside dropdow
 ## Installation
 
 ```bash
-npm install supperdd
+npm install superdd
 ```
 
 ## Usage
