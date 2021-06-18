@@ -51,12 +51,13 @@ const Home = (props) => {
         Filterable={true}
         SetSelectedItems={setSelectedItems}
         UpdateAction={onUpdateAction}
+        Sortable={true}
       />
       <br />
       <TagsContainer
         DisplayBy={'Code'}
         TagsHasDeselect={true}
-        ContainerHasDeselect={5}
+        ContainerHasDeselect={true}
       />
     </div>
   );

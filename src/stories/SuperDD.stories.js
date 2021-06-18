@@ -47,7 +47,7 @@ stories.add('App', () => {
       <TagsContainer
         DisplayBy={'Code'}
         TagsHasDeselect={true}
-        ContainerHasDeselect={5}
+        ContainerHasDeselect={true}
       />
     </div>
   );
