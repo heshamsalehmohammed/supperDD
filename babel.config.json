@@ -1,6 +1,12 @@
 {
   "presets": [
     [
+      "minify",
+      {
+        "keepFnName": true
+      }
+    ],
+    [
       "@babel/env",
       {
         "targets": {

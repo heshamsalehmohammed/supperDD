@@ -1,7 +1,9 @@
 # SuperDD
 
-Very useful react component for multi selection dropdown with filtering, 
-toggle selecting all, tags outside the dropdown and custom button inside dropdown
+[Super Drop Down] is a very useful react component for multi selection dropdown 
+with Filtering, Sorting,
+Toggle selecting all, Tags in another component 
+and Custom buttons inside dropdown with custom functions can be provided from the outside 
 
 ![Alt Text](src/ReadMe/supperdd.gif)
 
