@@ -5,7 +5,7 @@ with Filtering, Sorting,
 Toggle selecting all, Tags in another component 
 and Custom buttons inside dropdown with custom functions can be provided from the outside 
 
-![Alt Text](src/ReadMe/supperdd.gif)
+![Alt Text](src/ReadMe/superdd.gif)
 
 ## Installation
 
