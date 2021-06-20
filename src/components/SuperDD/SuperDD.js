@@ -1,7 +1,6 @@
 import './SuperDD.css';
 import React, {useState, useRef, useEffect} from 'react';
-import {useSelector, useDispatch, connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import {useSelector, useDispatch} from 'react-redux';
 import {updateDataList} from '../Redux/actions';
 import {SortState} from '../Common/enums';
 
@@ -20,14 +19,17 @@ const SuperDD = React.memo((props) => {
   } = props;
 
   const dispatch = useDispatch();
+  
   const [search, setSearch] = useState('');
+
+  const [isShown, setIsShown] = useState(false);
 
   const [sortState, setSortState] = useState(SortState.None);
 
   const reduxDataList = useSelector((state) => state.dataList);
 
-  const getInitLocalDataList = () => {
-    if (reduxDataList && reduxDataList.length > 0) {
+  const getInitLocalDataList = (fromRedux = true) => {
+    if (fromRedux && reduxDataList && reduxDataList.length > 0) {
       return reduxDataList;
     } else {
       return DataList?.map((dl) => ({...dl, isSelected: false})) ?? [];
@@ -41,8 +43,10 @@ const SuperDD = React.memo((props) => {
     updateUser();
   }, [reduxDataList]);
 
-  const supperDDSelectBoxRef = useRef(null);
-  const supperDDSelectOutputRef = useRef(null);
+  useEffect(() => {
+    dispatch(updateDataList([]));
+    setLocalDataList(getInitLocalDataList(false));
+  }, [DataList]);
 
   const handleCheckboxClicked = (event, objectOfList) => {
     setLocalDataList(
@@ -150,18 +154,24 @@ const SuperDD = React.memo((props) => {
     UpdateAction(returnedSelectedItems);
   };
 
-  const updateButtonClickHandler = (e) => {
+  const updateButtonClickHandler = () => {
     dispatch(updateDataList(localDataList));
   };
-  const cancelButtonClickHandler = (e) => {
+  const cancelButtonClickHandler = () => {
     CancelAction();
     toggleShow();
   };
 
-  const toggleShow = (e) => {
-    supperDDSelectBoxRef.current.classList.toggle('show');
-    supperDDSelectOutputRef.current.classList.toggle('active');
+  const toggleShow = () => {
+    if (isShown) {
+      setIsShown(false);
+    } else {
+      setIsShown(true);
+    }
   };
+
+
+
 
   const isAllSelected = () => {
     return localDataList.every((dl) => dl.isSelected);
@@ -203,15 +213,19 @@ const SuperDD = React.memo((props) => {
       <div className="superdd-select-wrapper">
         <div className="superdd-select">
           <div
-            onClick={(e) => toggleShow(e)}
-            ref={supperDDSelectOutputRef}
-            className="superdd-select-output">
+            onClick={toggleShow}
+            className={
+              isShown ? 'superdd-select-output active' : 'superdd-select-output'
+            }>
             <p>{PlaceHolder}</p>
             <div className="icon">
               <div className="dropdown"></div>
             </div>
           </div>
-          <div ref={supperDDSelectBoxRef} className="superdd-select-box">
+          <div
+            className={
+              isShown ? 'superdd-select-box show' : 'superdd-select-box'
+            }>
             {Filterable && (
               <div className="superdd-search-input-container">
                 <input
@@ -240,14 +254,14 @@ const SuperDD = React.memo((props) => {
             <div className="superdd-select-buttons">
               {ShowUpdateButton && (
                 <button
-                  onClick={(e) => updateButtonClickHandler(e)}
+                  onClick={updateButtonClickHandler}
                   type="button">
                   Update
                 </button>
               )}
               {ShowCancelButton && (
                 <button
-                  onClick={(e) => cancelButtonClickHandler(e)}
+                  onClick={cancelButtonClickHandler}
                   type="button">
                   Cancel
                 </button>
@@ -260,18 +274,4 @@ const SuperDD = React.memo((props) => {
   );
 });
 
-SuperDD.propTypes = {
-  DataList: PropTypes.array,
-  DisplayBy: PropTypes.string,
-  PlaceHolder: PropTypes.string,
-  ShowUpdateButton: PropTypes.bool,
-  ShowCancelButton: PropTypes.bool,
-  UpdateAction: PropTypes.func,
-  CancelAction: PropTypes.func,
-  Filterable: PropTypes.bool,
-  SetSelectedItems: PropTypes.func,
-};
-
-export default connect((state) => ({
-  score: state.dataList,
-}))(SuperDD);
+export default SuperDD;

@@ -1,8 +1,7 @@
 import './TagsContainer.css';
 import React, {useState, useRef, useEffect} from 'react';
-import {useSelector, useDispatch, connect} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {deselectAll, updateDataList} from '../Redux/actions';
-import PropTypes from 'prop-types';
 
 const TagsContainer = React.memo((props) => {
   const {
@@ -63,10 +62,5 @@ const TagsContainer = React.memo((props) => {
   );
 });
 
-TagsContainer.propTypes = {
-  DisplayBy: PropTypes.string,
-  TagsHasDeselect: PropTypes.bool,
-  ContainerHasDeselect: PropTypes.bool,
-};
 
 export default TagsContainer;

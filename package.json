@@ -1,18 +1,28 @@
 {
   "name": "superdd",
   "version": "2.3.0",
-  "description": "Very useful react component for multi selection dropdown with filtering , toggle selecting all, tags outside the dropdown and custom button inside dropdown ",
+  "description": "[Super Drop Down] is a very useful react component for multi selection dropdown with Filtering, Sorting, Toggle selecting all, Tags in another component and Custom buttons inside dropdown with custom functions can be provided from the outside ",
   "keywords": [
     "react",
     "components",
+    "component",
     "ui",
     "dropdown",
     "drop-down",
+    "combobox",
+    "combo-box",
     "multiselect",
     "multi-select",
+    "select",
+    "options",
     "tags",
+    "tags-container",
+    "tag-container",
     "checkbox",
-    "filter"
+    "filter",
+    "sort",
+    "filterable",
+    "sortable"
   ],
   "private": false,
   "module": "dist/index.js",
@@ -45,8 +55,7 @@
     "babel-loader": "^8.2.2",
     "babel-preset-minify": "^0.5.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "rollup": "^2.52.1"
+    "react-dom": "^17.0.2"
   },
   "peerDependencies": {
     "react": "^17.0.2",
@@ -54,8 +63,9 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "prop-types": "^15.7.2",
+    "axios": "^0.21.1",
     "react-redux": "^7.2.4",
+    "react-toastify": "^7.0.4",
     "redux": "^4.1.0"
   }
 }
