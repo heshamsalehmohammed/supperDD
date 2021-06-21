@@ -8,7 +8,6 @@ import {SuperDD, TagsContainer} from '../../dist/index';
 const stories = storiesOf('App Test', module);
 
 stories.add('App', () => {
-
   // try with dynamic data list retrieved from some Api
   const [retrievedDataList, setRetrievedDataList] = useState([]);
   useEffect(() => {
@@ -45,7 +44,7 @@ stories.add('App', () => {
 
   return (
     <>
-      <div className="m-5" style={{width: '220px'}}>
+      <div className="m-5" style={{width: '225px'}}>
         <SuperDD
           DataList={retrievedDataList} // list of objects
           UniqueKey={'_id'} // object unique key - must be unique per object
@@ -60,7 +59,7 @@ stories.add('App', () => {
         />
       </div>
       <br />
-      <div className="m-5" style={{width: '500px'}}>
+      <div className="m-5" style={{width: '500px', marginTop: '270px'}}>
         <TagsContainer
           DisplayBy={'title'}
           TagsHasDeselect={true}

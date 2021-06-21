@@ -48,8 +48,10 @@ const SuperDD = React.memo((props) => {
   }, [UniqueKey]);
 
   useEffect(() => {
-    setLocalDataList(getInitLocalDataList());
-    updateUser();
+    if (reduxDataList.map((rdl) => rdl.isSelected).toString() != "") {
+      setLocalDataList(getInitLocalDataList());
+      updateUser();
+    }
   }, [reduxDataList.map((rdl) => rdl.isSelected).toString()]);
 
   useEffect(() => {
