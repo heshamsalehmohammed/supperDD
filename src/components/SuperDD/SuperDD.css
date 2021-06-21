@@ -63,6 +63,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .superdd-select-box.show {
@@ -112,10 +113,16 @@
   outline: none;
 }
 
+.supperDDcheckbox-list-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-grow: 1;
+}
+
 .supperDDcheckbox-container {
   padding: 0.25em;
   border: #ffffff00 1px solid;
-  height: 100%;
   display: flex;
 }
 

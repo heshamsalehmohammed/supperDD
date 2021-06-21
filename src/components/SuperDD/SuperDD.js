@@ -1,13 +1,14 @@
 import './SuperDD.css';
 import React, {useState, useRef, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {updateDataList} from '../Redux/actions';
+import {updateDataList, setUniqueKey} from '../Redux/actions';
 import {SortState} from '../Common/enums';
 
 const SuperDD = React.memo((props) => {
   const {
     DataList,
-    DisplayBy = 'Id',
+    UniqueKey,
+    DisplayBy,
     PlaceHolder = 'Select Items ...',
     ShowUpdateButton = true,
     ShowCancelButton = true,
@@ -18,8 +19,12 @@ const SuperDD = React.memo((props) => {
     SetSelectedItems,
   } = props;
 
+  if (!UniqueKey) {
+    throw new Error('the name of the UniqueKey of your data must be provided');
+  }
+
   const dispatch = useDispatch();
-  
+
   const [search, setSearch] = useState('');
 
   const [isShown, setIsShown] = useState(false);
@@ -29,7 +34,7 @@ const SuperDD = React.memo((props) => {
   const reduxDataList = useSelector((state) => state.dataList);
 
   const getInitLocalDataList = (fromRedux = true) => {
-    if (fromRedux && reduxDataList && reduxDataList.length > 0) {
+    if (fromRedux && reduxDataList.length > 0) {
       return reduxDataList;
     } else {
       return DataList?.map((dl) => ({...dl, isSelected: false})) ?? [];
@@ -39,21 +44,27 @@ const SuperDD = React.memo((props) => {
   const [localDataList, setLocalDataList] = useState(getInitLocalDataList());
 
   useEffect(() => {
+    dispatch(setUniqueKey(UniqueKey));
+  }, [UniqueKey]);
+
+  useEffect(() => {
     setLocalDataList(getInitLocalDataList());
     updateUser();
-  }, [reduxDataList]);
+  }, [reduxDataList.map((rdl) => rdl.isSelected).toString()]);
 
   useEffect(() => {
     dispatch(updateDataList([]));
     setLocalDataList(getInitLocalDataList(false));
-  }, [DataList]);
+  }, [DataList.map((rdl) => rdl[UniqueKey]).toString()]);
 
   const handleCheckboxClicked = (event, objectOfList) => {
     setLocalDataList(
       localDataList.map((ldl) => ({
         ...ldl,
         isSelected:
-          ldl.Id == objectOfList.Id ? event.target.checked : ldl.isSelected,
+          ldl[UniqueKey] == objectOfList[UniqueKey]
+            ? event.target.checked
+            : ldl.isSelected,
       }))
     );
   };
@@ -111,8 +122,8 @@ const SuperDD = React.memo((props) => {
     setSearch(e.target.value);
   };
 
-  const handleSelectAll = (e) => {
-    if (localDataList.every((ldl) => ldl.isSelected)) {
+  const handleSelectAll = () => {
+    if (isAllSelected()) {
       //deselect all
       deselectAll();
     } else {
@@ -170,9 +181,6 @@ const SuperDD = React.memo((props) => {
     }
   };
 
-
-
-
   const isAllSelected = () => {
     return localDataList.every((dl) => dl.isSelected);
   };
@@ -187,9 +195,8 @@ const SuperDD = React.memo((props) => {
       case SortState.Des:
         return <span>&#10597;</span>;
       default:
-        break;
+        return '';
     }
-    return localDataList.every((dl) => dl.isSelected);
   };
 
   const incrementSortState = (e) => {
@@ -237,7 +244,7 @@ const SuperDD = React.memo((props) => {
                   <div className="selectall-checkbox">
                     <input
                       type="checkbox"
-                      onChange={(e) => handleSelectAll(e)}
+                      onChange={handleSelectAll}
                       className={'superdd-selectall-input supperDDcheckbox'}
                       title={'Select All'}
                       checked={isAllSelected()}
@@ -250,19 +257,17 @@ const SuperDD = React.memo((props) => {
                 </div>
               </div>
             )}
-            {getLiListItems()}
+            <div className="supperDDcheckbox-list-container">
+              {getLiListItems()}
+            </div>
             <div className="superdd-select-buttons">
               {ShowUpdateButton && (
-                <button
-                  onClick={updateButtonClickHandler}
-                  type="button">
+                <button onClick={updateButtonClickHandler} type="button">
                   Update
                 </button>
               )}
               {ShowCancelButton && (
-                <button
-                  onClick={cancelButtonClickHandler}
-                  type="button">
+                <button onClick={cancelButtonClickHandler} type="button">
                   Cancel
                 </button>
               )}

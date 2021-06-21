@@ -9,18 +9,18 @@ const stories = storiesOf('App Test', module);
 
 stories.add('App', () => {
 
-
+  // try with dynamic data list retrieved from some Api
   const [retrievedDataList, setRetrievedDataList] = useState([]);
-
   useEffect(() => {
     async function fetchMyAPI() {
       const {data: movies} = await getMovies();
-      setRetrievedDataList(movies.map((m) => ({...m, Id: m._id})));
+      setRetrievedDataList(movies);
     }
     fetchMyAPI();
   }, []);
 
-/*   let retrievedDataList = [
+  // try with static data
+  /*   let retrievedDataList = [
     {Id: 3, title: 'ccc', Name: 'Hello3', Discription: 'anything3'},
     {Id: 1, title: 'aaa', Name: 'Hello1', Discription: 'anything1'},
     {Id: 4, title: 'ddd', Name: 'Hello4', Discription: 'anything4'},
@@ -30,7 +30,6 @@ stories.add('App', () => {
     {Id: 8, title: 'lll', Name: 'Hello4', Discription: 'anything4'},
     {Id: 6, title: 'ggg', Name: 'Hello4', Discription: 'anything4'},
   ]; */
-
 
   // to get the selected data
   // whither on the update action
@@ -43,26 +42,31 @@ stories.add('App', () => {
   const onUpdateAction = (superDDSelectedItems) => {
     console.log('from update function', superDDSelectedItems);
   };
- 
+
   return (
-    <div className="m-5" style={{width: '250px'}}>
-      <SuperDD
-        DataList={retrievedDataList}
-        DisplayBy={'title'}
-        PlaceHolder={'Select Movies'}
-        ShowUpdateButton={true}
-        ShowCancelButton={true}
-        Filterable={true}
-        SetSelectedItems={setSelectedItems}
-        UpdateAction={onUpdateAction}
-        Sortable={true}
-      />
+    <>
+      <div className="m-5" style={{width: '250px'}}>
+        <SuperDD
+          DataList={retrievedDataList} // list of objects
+          UniqueKey={'_id'} // object unique key - must be unique per object
+          DisplayBy={'title'}
+          PlaceHolder={'Select Movies'}
+          ShowUpdateButton={true}
+          ShowCancelButton={true}
+          Filterable={true}
+          SetSelectedItems={setSelectedItems}
+          UpdateAction={onUpdateAction}
+          Sortable={true}
+        />
+      </div>
       <br />
-      <TagsContainer
-        DisplayBy={'title'}
-        TagsHasDeselect={true}
-        ContainerHasDeselect={true}
-      />
-    </div>
+      <div className="m-5" style={{width: '500px'}}>
+        <TagsContainer
+          DisplayBy={'title'}
+          TagsHasDeselect={true}
+          ContainerHasDeselect={true}
+        />
+      </div>
+    </>
   );
 });

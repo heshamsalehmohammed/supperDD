@@ -5,14 +5,19 @@ import {deselectAll, updateDataList} from '../Redux/actions';
 
 const TagsContainer = React.memo((props) => {
   const {
-    DisplayBy = 'Id',
+    DisplayBy,
     TagsHasDeselect = true,
     ContainerHasDeselect = true,
   } = props;
 
+  if (!DisplayBy) {
+    throw new Error("the DisplayBy must be provided to TagsContainer");
+  }
+
   const dispatch = useDispatch();
 
   const reduxDataList = useSelector((state) => state.dataList);
+  const uniqueKey = useSelector((state) => state.uniqueKey);
 
   useEffect(() => {
     setTags(reduxDataList?.filter((dl) => dl.isSelected) ?? []);
@@ -27,7 +32,7 @@ const TagsContainer = React.memo((props) => {
       updateDataList([
         ...reduxDataList.map((dl) => ({
           ...dl,
-          isSelected: dl.Id == tag.Id ? false : dl.isSelected,
+          isSelected: dl[uniqueKey] == tag[uniqueKey] ? false : dl.isSelected,
         })),
       ])
     );

@@ -19,16 +19,28 @@ npm install superdd
 import {SuperDD, TagsContainer} from 'superdd/dist/index';
 
 const Home = (props) => {
-  let listData = [
-    {Id: 3, Code: 'ccc', Name: 'Hello3', Discription: 'anything3'},
-    {Id: 1, Code: 'aaa', Name: 'Hello1', Discription: 'anything1'},
-    {Id: 4, Code: 'ddd', Name: 'Hello4', Discription: 'anything4'},
-    {Id: 2, Code: 'bbb', Name: 'Hello2', Discription: 'anything2'},
-    {Id: 7, Code: 'hhh', Name: 'Hello4', Discription: 'anything4'},
-    {Id: 5, Code: 'fff', Name: 'Hello4', Discription: 'anything4'},
-    {Id: 8, Code: 'lll', Name: 'Hello4', Discription: 'anything4'},
-    {Id: 6, Code: 'ggg', Name: 'Hello4', Discription: 'anything4'},
-  ];
+
+  // try with dynamic data list retrieved from some Api
+  const [retrievedDataList, setRetrievedDataList] = useState([]);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const {data: movies} = await getMovies();
+      setRetrievedDataList(movies);
+    }
+    fetchMyAPI();
+  }, []);
+
+  // try with static data
+  /*   let retrievedDataList = [
+    {Id: 3, title: 'ccc', Name: 'Hello3', Discription: 'anything3'},
+    {Id: 1, title: 'aaa', Name: 'Hello1', Discription: 'anything1'},
+    {Id: 4, title: 'ddd', Name: 'Hello4', Discription: 'anything4'},
+    {Id: 2, title: 'bbb', Name: 'Hello2', Discription: 'anything2'},
+    {Id: 7, title: 'hhh', Name: 'Hello4', Discription: 'anything4'},
+    {Id: 5, title: 'fff', Name: 'Hello4', Discription: 'anything4'},
+    {Id: 8, title: 'lll', Name: 'Hello4', Discription: 'anything4'},
+    {Id: 6, title: 'ggg', Name: 'Hello4', Discription: 'anything4'},
+  ]; */
 
   // to get the selected data
   // whither on the update action
@@ -43,25 +55,30 @@ const Home = (props) => {
   };
 
   return (
-    <div className="m-5" style={{width: '250px'}}>
-      <SuperDD
-        DataList={listData}
-        DisplayBy={'Code'}
-        PlaceHolder={'Select Platforms'}
-        ShowUpdateButton={true}
-        ShowCancelButton={true}
-        Filterable={true}
-        SetSelectedItems={setSelectedItems}
-        UpdateAction={onUpdateAction}
-        Sortable={true}
-      />
+    <>
+      <div className="m-5" style={{width: '250px'}}>
+        <SuperDD
+          DataList={retrievedDataList} // list of objects
+          UniqueKey={'_id'} // object unique key - must be unique per object
+          DisplayBy={'title'}
+          PlaceHolder={'Select Movies'}
+          ShowUpdateButton={true}
+          ShowCancelButton={true}
+          Filterable={true}
+          SetSelectedItems={setSelectedItems}
+          UpdateAction={onUpdateAction}
+          Sortable={true}
+        />
+      </div>
       <br />
-      <TagsContainer
-        DisplayBy={'Code'}
-        TagsHasDeselect={true}
-        ContainerHasDeselect={true}
-      />
-    </div>
+      <div className="m-5" style={{width: '500px'}}>
+        <TagsContainer
+          DisplayBy={'title'}
+          TagsHasDeselect={true}
+          ContainerHasDeselect={true}
+        />
+      </div>
+    </>
   );
 };
 
