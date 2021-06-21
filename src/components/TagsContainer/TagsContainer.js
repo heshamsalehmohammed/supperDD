@@ -1,5 +1,5 @@
 import './TagsContainer.css';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {deselectAll, updateDataList} from '../Redux/actions';
 
@@ -11,7 +11,7 @@ const TagsContainer = React.memo((props) => {
   } = props;
 
   if (!DisplayBy) {
-    throw new Error("the DisplayBy must be provided to TagsContainer");
+    throw new Error('the DisplayBy must be provided to TagsContainer');
   }
 
   const dispatch = useDispatch();
@@ -66,6 +66,5 @@ const TagsContainer = React.memo((props) => {
     </div>
   );
 });
-
 
 export default TagsContainer;

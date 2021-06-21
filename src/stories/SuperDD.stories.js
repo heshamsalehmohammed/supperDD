@@ -45,7 +45,7 @@ stories.add('App', () => {
 
   return (
     <>
-      <div className="m-5" style={{width: '250px'}}>
+      <div className="m-5" style={{width: '220px'}}>
         <SuperDD
           DataList={retrievedDataList} // list of objects
           UniqueKey={'_id'} // object unique key - must be unique per object

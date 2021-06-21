@@ -8,10 +8,8 @@
 }
 
 .superdd-select-output {
-  min-width: 200px;
   scrollbar-width: none;
   display: flex;
-  gap: 0.4em;
   background: var(--color-primary);
   padding: 0.1em 0.8em;
   font-size: 1rem;
@@ -43,7 +41,7 @@
 }
 
 .superdd-select-box {
-  min-width: 200px;
+  width: calc(100% - 1.6em);
   position: absolute;
   height: 250px;
   list-style: none;
@@ -60,16 +58,17 @@
   transition: 300ms linear;
   z-index: -2;
   overflow-x: hidden;
-  position: relative;
+  /* position: relative; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: white;
 }
 
 .superdd-select-box.show {
+  z-index: 2;
   opacity: 1;
   transform: translateY(0);
-  z-index: 2;
 }
 
 .superdd-select-box li {
@@ -145,7 +144,7 @@
   flex-direction: row;
   align-items: center;
   align-content: center;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 
 .supperDDcheckbox {
@@ -225,7 +224,7 @@
   background: #0052cc;
 }
 
-.sort-button{
+.sort-button {
   font-size: medium;
   font-weight: bold;
   cursor: pointer;

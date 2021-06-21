@@ -1,6 +1,6 @@
 {
   "name": "superdd",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "[Super Drop Down] is a very useful react component for multi selection dropdown with Filtering, Sorting, Toggle selecting all, Tags in another component and Custom buttons inside dropdown with custom functions can be provided from the outside ",
   "keywords": [
     "react",

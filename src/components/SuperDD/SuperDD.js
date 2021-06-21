@@ -1,5 +1,5 @@
 import './SuperDD.css';
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {updateDataList, setUniqueKey} from '../Redux/actions';
 import {SortState} from '../Common/enums';
@@ -82,18 +82,12 @@ const SuperDD = React.memo((props) => {
         var nameA = a[DisplayBy].toUpperCase();
         var nameB = b[DisplayBy].toUpperCase();
         if (nameA < nameB) {
-          if (sortState == SortState.Asc) {
-            return -1;
-          } else {
-            return 1;
-          }
+          if (sortState == SortState.Asc) return -1;
+          else return 1;
         }
         if (nameA > nameB) {
-          if (sortState == SortState.Asc) {
-            return 1;
-          } else {
-            return -1;
-          }
+          if (sortState == SortState.Asc) return 1;
+          else return -1;
         }
         return 0;
       });
@@ -199,7 +193,7 @@ const SuperDD = React.memo((props) => {
     }
   };
 
-  const incrementSortState = (e) => {
+  const incrementSortState = () => {
     switch (sortState) {
       case SortState.None:
         setSortState(SortState.Asc);
