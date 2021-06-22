@@ -42,8 +42,15 @@ stories.add('App', () => {
     console.log('from update function', superDDSelectedItems);
   };
 
+  const [deselectAllSelected, setDeselectAllSelected] = useState(false);
+
+  const deselectButtonHandler = () => {
+    setDeselectAllSelected(true);
+  };
+
   return (
     <>
+      <button onClick={deselectButtonHandler}> Deselect Selected </button>
       <div className="m-5" style={{width: '225px'}}>
         <SuperDD
           DataList={retrievedDataList} // list of objects
@@ -64,6 +71,8 @@ stories.add('App', () => {
           DisplayBy={'title'}
           TagsHasDeselect={true}
           ContainerHasDeselect={true}
+          DeselectAll={deselectAllSelected}
+          DeselectAllSetter={setDeselectAllSelected}
         />
       </div>
     </>

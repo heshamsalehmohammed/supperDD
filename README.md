@@ -54,6 +54,13 @@ const Home = (props) => {
     console.log('from update function', superDDSelectedItems);
   };
 
+  // this part if you wanna deselect all selected from a button click 
+  const [deselectAllSelected, setDeselectAllSelected] = useState(false);
+  const deselectButtonHandler = () => {
+    setDeselectAllSelected(true);
+  };
+  // then provide you button and attach the above method to it onClick={deselectButtonHandler}
+
   return (
     <>
       <div className="m-5" style={{width: '250px'}}>
@@ -76,6 +83,8 @@ const Home = (props) => {
           DisplayBy={'title'}
           TagsHasDeselect={true}
           ContainerHasDeselect={true}
+          DeselectAll={deselectAllSelected}
+          DeselectAllSetter={setDeselectAllSelected}
         />
       </div>
     </>

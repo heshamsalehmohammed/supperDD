@@ -8,6 +8,8 @@ const TagsContainer = React.memo((props) => {
     DisplayBy,
     TagsHasDeselect = true,
     ContainerHasDeselect = true,
+    DeselectAll = false,
+    DeselectAllSetter = () =>{}
   } = props;
 
   if (!DisplayBy) {
@@ -38,7 +40,16 @@ const TagsContainer = React.memo((props) => {
     );
   };
 
-  const closeButtonHandler = (e) => {
+
+
+  useEffect(() => {
+    if (DeselectAll && DeselectAllSetter) {
+      closeButtonHandler();
+      DeselectAllSetter(false);
+    }
+  }, [DeselectAll]);
+
+  const closeButtonHandler = () => {
     dispatch(deselectAll());
   };
 
