@@ -63,6 +63,8 @@ stories.add('App', () => {
           SetSelectedItems={setSelectedItems}
           UpdateAction={onUpdateAction}
           Sortable={true}
+          CloseAfterEachUpdate={true}
+          SelectFiltered={true}
         />
       </div>
       <br />

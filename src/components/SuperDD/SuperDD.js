@@ -17,6 +17,8 @@ const SuperDD = React.memo((props) => {
     Filterable = true,
     Sortable = true,
     SetSelectedItems,
+    CloseAfterEachUpdate = false,
+    SelectFiltered = false,
   } = props;
 
   if (!UniqueKey) {
@@ -48,7 +50,7 @@ const SuperDD = React.memo((props) => {
   }, [UniqueKey]);
 
   useEffect(() => {
-    if (reduxDataList.map((rdl) => rdl.isSelected).toString() != "") {
+    if (reduxDataList.map((rdl) => rdl.isSelected).toString() != '') {
       setLocalDataList(getInitLocalDataList());
       updateUser();
     }
@@ -71,10 +73,14 @@ const SuperDD = React.memo((props) => {
     );
   };
 
-  const getLiListItems = () => {
-    let filteredDataLocalList = localDataList.filter((ldl) => {
+  const getFilteredLocalDataList = () => {
+    return localDataList.filter((ldl) => {
       return ldl[DisplayBy].toLowerCase().indexOf(search?.toLowerCase()) !== -1;
     });
+  };
+
+  const getLiListItems = () => {
+    let filteredDataLocalList = getFilteredLocalDataList();
     let sortedDataLocalList = filteredDataLocalList;
     if (
       (sortState == SortState.Asc || sortState == SortState.Des) &&
@@ -120,11 +126,17 @@ const SuperDD = React.memo((props) => {
 
   const handleSelectAll = () => {
     if (isAllSelected()) {
-      //deselect all
       deselectAll();
     } else {
-      //select all
       selectedAll();
+    }
+  };
+
+  const handleSelectAllFiltered = () => {
+    if (isAllFilteredSelected()) {
+      deselectAllFiltered();
+    } else {
+      selectedAllFiltered();
     }
   };
 
@@ -146,6 +158,36 @@ const SuperDD = React.memo((props) => {
     );
   };
 
+  const deselectAllFiltered = () => {
+    let filteredDataLocalList = getFilteredLocalDataList();
+    setLocalDataList(
+      localDataList.map((ldl) => ({
+        ...ldl,
+        isSelected:
+          filteredDataLocalList.findIndex(
+            (fdll) => fdll[UniqueKey] === ldl[UniqueKey]
+          ) != -1
+            ? false
+            : ldl.isSelected,
+      }))
+    );
+  };
+
+  const selectedAllFiltered = () => {
+    let filteredDataLocalList = getFilteredLocalDataList();
+    setLocalDataList(
+      localDataList.map((ldl) => ({
+        ...ldl,
+        isSelected:
+          filteredDataLocalList.findIndex(
+            (fdll) => fdll[UniqueKey] === ldl[UniqueKey]
+          ) != -1
+            ? true
+            : ldl.isSelected,
+      }))
+    );
+  };
+
   const updateUser = () => {
     const returnedSelectedItems = [
       ...reduxDataList
@@ -163,7 +205,11 @@ const SuperDD = React.memo((props) => {
 
   const updateButtonClickHandler = () => {
     dispatch(updateDataList(localDataList));
+    if (CloseAfterEachUpdate) {
+      toggleShow();
+    }
   };
+
   const cancelButtonClickHandler = () => {
     CancelAction();
     toggleShow();
@@ -179,6 +225,10 @@ const SuperDD = React.memo((props) => {
 
   const isAllSelected = () => {
     return localDataList.every((dl) => dl.isSelected);
+  };
+
+  const isAllFilteredSelected = () => {
+    return getFilteredLocalDataList().every((dl) => dl.isSelected);
   };
 
   const getSortStateSpan = () => {
@@ -240,10 +290,18 @@ const SuperDD = React.memo((props) => {
                   <div className="selectall-checkbox">
                     <input
                       type="checkbox"
-                      onChange={handleSelectAll}
+                      onChange={
+                        SelectFiltered
+                          ? handleSelectAllFiltered
+                          : handleSelectAll
+                      }
                       className={'superdd-selectall-input supperDDcheckbox'}
                       title={'Select All'}
-                      checked={isAllSelected()}
+                      checked={
+                        SelectFiltered
+                          ? isAllFilteredSelected()
+                          : isAllSelected()
+                      }
                     />
                     <label>Select All</label>
                   </div>
