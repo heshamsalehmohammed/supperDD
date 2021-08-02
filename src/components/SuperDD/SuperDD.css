@@ -147,6 +147,15 @@
   justify-content: space-between;
 }
 
+.superdd-selectall-container-no-items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+  align-self: center;
+}
+
 .supperDDcheckbox {
   transform: scale3d(1.5, 1.5, 1.5);
   margin: 0.5em;

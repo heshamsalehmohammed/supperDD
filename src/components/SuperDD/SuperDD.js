@@ -218,6 +218,7 @@ const SuperDD = React.memo((props) => {
   const toggleShow = () => {
     if (isShown) {
       setIsShown(false);
+      setSearch('');
     } else {
       setIsShown(true);
     }
@@ -284,31 +285,39 @@ const SuperDD = React.memo((props) => {
                 <input
                   className="superdd-search-input"
                   onChange={onSearchChange}
+                  value={search}
                   type={'text'}
                 />
-                <div className="superdd-selectall-container">
-                  <div className="selectall-checkbox">
-                    <input
-                      type="checkbox"
-                      onChange={
-                        SelectFiltered
-                          ? handleSelectAllFiltered
-                          : handleSelectAll
-                      }
-                      className={'superdd-selectall-input supperDDcheckbox'}
-                      title={'Select All'}
-                      checked={
-                        SelectFiltered
-                          ? isAllFilteredSelected()
-                          : isAllSelected()
-                      }
-                    />
-                    <label>Select All</label>
+                {getFilteredLocalDataList().length === 0 && (
+                  <div className="superdd-selectall-container-no-items">
+                    No items Found
                   </div>
-                  <div onClick={incrementSortState} className="sort-button">
-                    {getSortStateSpan()}
+                )}
+                {getFilteredLocalDataList().length > 0 && (
+                  <div className="superdd-selectall-container">
+                    <div className="selectall-checkbox">
+                      <input
+                        type="checkbox"
+                        onChange={
+                          SelectFiltered
+                            ? handleSelectAllFiltered
+                            : handleSelectAll
+                        }
+                        className={'superdd-selectall-input supperDDcheckbox'}
+                        title={'Select All'}
+                        checked={
+                          SelectFiltered
+                            ? isAllFilteredSelected()
+                            : isAllSelected()
+                        }
+                      />
+                      <label>Select All</label>
+                    </div>
+                    <div onClick={incrementSortState} className="sort-button">
+                      {getSortStateSpan()}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
             <div className="supperDDcheckbox-list-container">
