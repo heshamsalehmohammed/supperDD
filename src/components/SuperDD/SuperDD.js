@@ -223,7 +223,7 @@ const SuperDD = React.memo((props) => {
       setIsShown(true);
     }
   };
-
+  /** @returns {boolean} */
   const isAllSelected = () => {
     return localDataList.every((dl) => dl.isSelected);
   };

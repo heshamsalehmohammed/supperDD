@@ -2,8 +2,8 @@ import React, {useState, useEffect, useRef} from 'react';
 import {storiesOf} from '@storybook/react';
 import {getMovies} from '../services/movieService';
 
-import {SuperDD, TagsContainer} from '../../dist/index';
-//import {SuperDD, TagsContainer} from '../components/index';
+//import {SuperDD, TagsContainer} from '../../dist/index';
+import {SuperDD, TagsContainer} from '../components/index';
 
 const stories = storiesOf('App Test', module);
 
