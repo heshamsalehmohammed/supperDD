@@ -19,10 +19,14 @@ const SuperDD = React.memo((props) => {
     SetSelectedItems,
     CloseAfterEachUpdate = false,
     SelectFiltered = false,
+    GlobalUniqueId,
   } = props;
 
   if (!UniqueKey) {
-    throw new Error('the name of the UniqueKey of your data must be provided');
+    throw new Error('UniqueKey of your data must be provided');
+  }
+  if (!GlobalUniqueId) {
+    throw new Error('GlobalUniqueId of your data must be provided');
   }
 
   const dispatch = useDispatch();
@@ -33,7 +37,9 @@ const SuperDD = React.memo((props) => {
 
   const [sortState, setSortState] = useState(SortState.None);
 
-  const reduxDataList = useSelector((state) => state.dataList);
+  const reduxDataList = useSelector(
+    (state) => state[GlobalUniqueId]?.dataList ?? []
+  );
 
   const getInitLocalDataList = (fromRedux = true) => {
     if (fromRedux && reduxDataList.length > 0) {
@@ -47,7 +53,7 @@ const SuperDD = React.memo((props) => {
 
   useEffect(() => {
     dispatch(setUniqueKey(UniqueKey));
-  }, [UniqueKey]);
+  }, [UniqueKey, GlobalUniqueId]);
 
   useEffect(() => {
     if (reduxDataList.map((rdl) => rdl.isSelected).toString() != '') {
@@ -57,9 +63,9 @@ const SuperDD = React.memo((props) => {
   }, [reduxDataList.map((rdl) => rdl.isSelected).toString()]);
 
   useEffect(() => {
-    dispatch(updateDataList([]));
+    dispatch(updateDataList([], GlobalUniqueId));
     setLocalDataList(getInitLocalDataList(false));
-  }, [DataList.map((rdl) => rdl[UniqueKey]).toString()]);
+  }, [GlobalUniqueId, DataList.map((rdl) => rdl[UniqueKey]).toString()]);
 
   const handleCheckboxClicked = (event, objectOfList) => {
     setLocalDataList(
@@ -204,7 +210,7 @@ const SuperDD = React.memo((props) => {
   };
 
   const updateButtonClickHandler = () => {
-    dispatch(updateDataList(localDataList));
+    dispatch(updateDataList(localDataList, GlobalUniqueId));
     if (CloseAfterEachUpdate) {
       toggleShow();
     }

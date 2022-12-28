@@ -9,17 +9,17 @@ const stories = storiesOf('App Test', module);
 
 stories.add('App', () => {
   // try with dynamic data list retrieved from some Api
-  const [retrievedDataList, setRetrievedDataList] = useState([]);
+  /*   const [retrievedDataList, setRetrievedDataList] = useState([]);
   useEffect(() => {
     async function fetchMyAPI() {
       const {data: movies} = await getMovies();
       setRetrievedDataList(movies);
     }
     fetchMyAPI();
-  }, []);
+  }, []); */
 
   // try with static data
-  /*   let retrievedDataList = [
+  let retrievedDataList = [
     {Id: 3, title: 'ccc', Name: 'Hello3', Discription: 'anything3'},
     {Id: 1, title: 'aaa', Name: 'Hello1', Discription: 'anything1'},
     {Id: 4, title: 'ddd', Name: 'Hello4', Discription: 'anything4'},
@@ -28,7 +28,7 @@ stories.add('App', () => {
     {Id: 5, title: 'fff', Name: 'Hello4', Discription: 'anything4'},
     {Id: 8, title: 'lll', Name: 'Hello4', Discription: 'anything4'},
     {Id: 6, title: 'ggg', Name: 'Hello4', Discription: 'anything4'},
-  ]; */
+  ];
 
   // to get the selected data
   // whither on the update action
@@ -54,7 +54,7 @@ stories.add('App', () => {
       <div className="m-5" style={{width: '225px'}}>
         <SuperDD
           DataList={retrievedDataList} // list of objects
-          UniqueKey={'_id'} // object unique key - must be unique per object
+          UniqueKey={'Id'} // object unique key - must be unique per object
           DisplayBy={'title'}
           PlaceHolder={'Select Movies'}
           ShowUpdateButton={true}
@@ -65,6 +65,7 @@ stories.add('App', () => {
           Sortable={true}
           CloseAfterEachUpdate={true}
           SelectFiltered={true}
+          GlobalUniqueId={'hesham'}
         />
       </div>
       <br />
@@ -75,6 +76,8 @@ stories.add('App', () => {
           ContainerHasDeselect={true}
           DeselectAll={deselectAllSelected}
           DeselectAllSetter={setDeselectAllSelected}
+          maxTagsBeforeShowMore={3}
+          GlobalUniqueId='hesham'
         />
       </div>
     </>
