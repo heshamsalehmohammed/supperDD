@@ -1,6 +1,6 @@
 {
   "name": "superdd",
-  "version": "3.1.0",
+  "version": "3.10.10",
   "description": "[Super Drop Down] is a very useful react component for multi selection dropdown with Filtering, Sorting, Toggle selecting all, Tags in another component and Custom buttons inside dropdown with custom functions can be provided from the outside ",
   "keywords": [
     "react",
@@ -54,10 +54,6 @@
     "@storybook/react": "^6.2.9",
     "babel-loader": "^8.2.2",
     "babel-preset-minify": "^0.5.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  },
-  "peerDependencies": {
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },
